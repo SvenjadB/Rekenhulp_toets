@@ -1,6 +1,9 @@
 import pandas as pd
 import datetime
 import os
+# Vaste Waardes
+snapshotdata = datetime.datetime.today().strftime('%m-%Y')
+os.chdir('/home/svenja/Documents')
 
 # importeren csv bestand
 inventory = pd.read_csv("alles_telt.csv")
@@ -49,8 +52,6 @@ Nieuw_rapport.rename(columns={
     inplace=True)
 
 # Opslaan Resultaten
-snapshotdata = datetime.datetime.today().strftime('%m-%d-%Y')
-os.chdir('/home/svenja/Documents')
 Nieuw_rapport.to_csv(open('Alles_Telt_' + snapshotdata + '.csv','w'),index='Naam')
 
 
