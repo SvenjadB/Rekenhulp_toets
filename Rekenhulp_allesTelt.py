@@ -1,16 +1,14 @@
 import pandas as pd
 import datetime
 import os
-# Vaste Waardes
-snapshotdata = datetime.datetime.today().strftime('%m-%Y')
-os.chdir('/home/svenja/Documents')
 
 # importeren csv bestand
-inventory = pd.read_csv("alles_telt.csv")
+inventory = pd.read_csv("alles_telt.csv", header=1)
 
 # selecteren van kolommen en naamgeving makkelijker maken
 inventory['blok_1'] = inventory['Blok 1']
 studenten = inventory[['Naam', 'Totaal', 'blok_1']]
+studenten = studenten.drop(studenten.index[-2:])
 
 # omzetten naar bruikbare cijfers
 studenten.Totaal = studenten['Totaal'].replace('[\%,]', '', regex=True)
@@ -52,6 +50,8 @@ Nieuw_rapport.rename(columns={
     inplace=True)
 
 # Opslaan Resultaten
+snapshotdata = datetime.datetime.today().strftime('%m-%d-%Y')
+os.chdir('/home/svenja/Documents')
 Nieuw_rapport.to_csv(open('Alles_Telt_' + snapshotdata + '.csv','w'),index='Naam')
 
 
