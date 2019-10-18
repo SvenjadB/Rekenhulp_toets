@@ -53,6 +53,6 @@ Nieuw_rapport.rename(columns={
 snapshotdata = datetime.datetime.today().strftime('%m-%d-%Y')
 os.chdir('/home/svenja/Documents')
 Nieuw_rapport.to_csv(open('Alles_Telt_' + snapshotdata + '.csv','w'),index='Naam')
-Nieuw_rapport.close()
+
 
 
