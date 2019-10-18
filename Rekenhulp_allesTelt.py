@@ -1,6 +1,6 @@
 import pandas as pd
 import datetime
-import os
+# import os
 
 # importeren csv bestand
 inventory = pd.read_csv("alles_telt.csv", header=1)
@@ -20,9 +20,9 @@ studenten.blok_1 = pd.to_numeric(studenten.blok_1)
 studenten['totaal_n'] = studenten.apply(lambda row:(row['Totaal'] * 8 - row['blok_1'])/ 7, axis=1)
 studenten['totaal_n'] = studenten.totaal_n.round().astype(int)
 
-# uitrekenen rapportcijfer met functie
 
 def rapport_cijfer(totaal_n):
+    """Omrekenen nieuw totaal naar rapportcijfer"""
     if totaal_n <= 50:
         return 3
     elif totaal_n == 100:
@@ -38,20 +38,21 @@ def rapport_cijfer(totaal_n):
 
 
 studenten['rapport'] = studenten.totaal_n.apply(rapport_cijfer)
+studenten['rToets1'] = studenten.blok_1.apply(rapport_cijfer)
 
 # Opschonen dataframe / beter leesbaar maken
 
-Nieuw_rapport = studenten[['Naam', 'rapport', 'totaal_n', 'Totaal', 'blok_1']]
+Nieuw_rapport = studenten[['Naam', 'blok_1', 'rToets1', 'rapport', 'totaal_n']]
 Nieuw_rapport.rename(columns={
     'rapport': 'Rapportcijfer',
-    'totaal_n': 'Nieuw percentage',
-    'Totaal': 'Oud totaal',
-    'blok_1': 'Cijfer blok 1'},
+    'totaal_n': 'Nieuw totaal %',
+    'rToets1': 'Toets 01 Rapport',
+    'blok_1': 'Uitslag Toets 01'},
     inplace=True)
 
 # Opslaan Resultaten
 snapshotdata = datetime.datetime.today().strftime('%d-%m-%Y')
-os.chdir('/home/svenja/Rapport_AT')
+#os.chdir('/home/svenja/Rapport_AT')
 
 with open('Alles_Telt_' + snapshotdata + '.csv', 'w') as RapportN:
     Nieuw_rapport.to_csv(RapportN, index='Naam')
