@@ -17,7 +17,7 @@ studenten.blok_1 = studenten['blok_1'].replace('[\%,]', '', regex=True)
 studenten.blok_1 = pd.to_numeric(studenten.blok_1)
 
 # uitrekenen nieuw totaal (Totaal * 8 - Toets 1) * 7
-studenten['totaal_n'] = studenten.apply(lambda row:(row['Totaal'] * 8 - row['blok_1'])/ 7, axis=1)
+studenten['totaal_n'] = studenten.apply(lambda row: (row['Totaal'] * 8 - row['blok_1']) / 7, axis=1)
 studenten['totaal_n'] = studenten.totaal_n.round().astype(int)
 
 
@@ -27,11 +27,11 @@ def rapport_cijfer(totaal_n):
         return 3
     elif totaal_n == 100:
         return 100
-    elif totaal_n < 100 and totaal_n >= 80:
+    elif 100 > totaal_n >= 80:
         c = (100 - totaal_n ) * 0.2
         g = round((10 - c), 1)
         return g
-    elif totaal_n < 80 and totaal_n > 50:
+    elif 80 > totaal_n > 50:
         c = (80 - totaal_n ) * 0.1
         g = round((6 - c), 1)
         return g
@@ -52,7 +52,7 @@ Nieuw_rapport.rename(columns={
 
 # Opslaan Resultaten
 snapshotdata = datetime.datetime.today().strftime('%d-%m-%Y')
-#os.chdir('/home/svenja/Rapport_AT')
+# os.chdir('/home/svenja/Rapport_AT')
 
 with open('Alles_Telt_' + snapshotdata + '.csv', 'w') as RapportN:
     Nieuw_rapport.to_csv(RapportN, index='Naam')
