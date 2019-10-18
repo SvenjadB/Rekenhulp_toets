@@ -50,9 +50,11 @@ Nieuw_rapport.rename(columns={
     inplace=True)
 
 # Opslaan Resultaten
-snapshotdata = datetime.datetime.today().strftime('%m-%d-%Y')
-os.chdir('/home/svenja/Documents')
-Nieuw_rapport.to_csv(open('Alles_Telt_' + snapshotdata + '.csv','w'),index='Naam')
+snapshotdata = datetime.datetime.today().strftime('%d-%m-%Y')
+os.chdir('/home/svenja/Rapport_AT')
+
+with open('Alles_Telt_' + snapshotdata + '.csv', 'w') as RapportN:
+    Nieuw_rapport.to_csv(RapportN, index='Naam')
 
 
 
