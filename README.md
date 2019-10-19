@@ -8,7 +8,6 @@ Een add-on in chrome waarmee je data direct als cvs kunt opslaan
 
 Python:
 - Pandas
+- easygui (+tkinter)
 
 
-LET OP:
-De uitkomsten worden automatisch opgeslagen in één vooraf bepaalde map. Zorg dat de juiste map bestaat
