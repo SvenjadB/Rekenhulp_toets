@@ -1,13 +1,20 @@
+#!/usr/bin/env python3
+import easygui as gui
 import pandas as pd
-import datetime
-# import os
 
-# importeren csv bestand
-inventory = pd.read_csv("alles_telt.csv", header=1)
+# TODO Juiste csv kolomtitels; het is niet blok 1 maar toets 1:
+#  automatisering of iets dergelijks
+
+# Vraag om bestand dat verwerkt moet worden
+input_path = gui.fileopenbox(
+    title="Choose a file...", default="*.csv")
+if input_path is None:
+    exit()
+overzicht = pd.read_csv(input_path, header=1)
 
 # selecteren van kolommen en naamgeving makkelijker maken
-inventory['blok_1'] = inventory['Blok 1']
-studenten = inventory[['Naam', 'Totaal', 'blok_1']]
+overzicht['blok_1'] = overzicht['Blok 1']
+studenten = overzicht[['Naam', 'Totaal', 'blok_1']]
 studenten = studenten.drop(studenten.index[-2:])
 
 # omzetten naar bruikbare cijfers
@@ -40,8 +47,7 @@ def rapport_cijfer(totaal_n):
 studenten['rapport'] = studenten.totaal_n.apply(rapport_cijfer)
 studenten['rToets1'] = studenten.blok_1.apply(rapport_cijfer)
 
-# Opschonen dataframe / beter leesbaar maken
-
+# CSV leesbare kolomtitels
 Nieuw_rapport = studenten[['Naam', 'blok_1', 'rToets1', 'rapport', 'totaal_n']]
 Nieuw_rapport.rename(columns={
     'rapport': 'Rapportcijfer',
@@ -50,12 +56,10 @@ Nieuw_rapport.rename(columns={
     'blok_1': 'Uitslag Toets 01'},
     inplace=True)
 
-# Opslaan Resultaten
-snapshotdata = datetime.datetime.today().strftime('%d-%m-%Y')
-# os.chdir('/home/svenja/Rapport_AT')
-
-with open('Alles_Telt_' + snapshotdata + '.csv', 'w') as RapportN:
+# Vraag locatie en naam waar nieuw bestand opgeslagen moet worden
+output_path = gui.filesavebox(
+        title="Choose a file...", default="*.csv")
+if output_path is None:
+    exit()
+with open(output_path, 'w') as RapportN:
     Nieuw_rapport.to_csv(RapportN, index='Naam')
-
-
-
